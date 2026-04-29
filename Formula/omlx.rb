@@ -41,6 +41,9 @@ class Omlx < Formula
     # macOS 15+ due to PyO3 linker errors (missing Python symbols at link time).
     ENV.append "LDFLAGS", "-Wl,-headerpad_max_install_names"
 
+    # Upgrade pip first to avoid issues with older bundled pip versions
+    system libexec/"bin/pip", "install", "--upgrade", "pip"
+
     # Install omlx (with optional grammar extra for structured output)
     install_spec = build.with?("grammar") ? "#{buildpath}[grammar]" : buildpath.to_s
     system libexec/"bin/pip", "install", "--no-binary", "pydantic-core,rpds-py,tiktoken", install_spec
